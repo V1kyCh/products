@@ -1,0 +1,22 @@
+{
+    "products": [
+        {
+            "name": "kiwi",
+            "description": "fruit",
+            "price": 25,
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Kiwi_%28Actinidia_chinensis%29_1_Luc_Viatour.jpg/2560px-Kiwi_%28Actinidia_chinensis%29_1_Luc_Viatour.jpg"
+        },
+        {
+            "name": "apple",
+            "description": "fruit",
+            "price": 43,
+            "image": "https://img.fozzyshop.com.ua/232947-thickbox_default/yabloki-ukrainskie.jpg"
+        },
+        {
+            "name": "kiwi",
+            "description": "fruit",
+            "price": 54,
+            "image": "https://www.harbuz.info/wp-content/uploads/2018/04/Banany.jpg"
+         }  
+    ]
+ }
