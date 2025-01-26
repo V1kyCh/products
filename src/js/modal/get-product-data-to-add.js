@@ -1,5 +1,4 @@
 import { addProduct } from "../services/addProducrApi"
-import { getProductsAPI } from "../services/getProductsApi"
 
 const formEl = document.querySelector('.form-info')
 const modalEl = document.querySelector('.modal')
@@ -14,5 +13,5 @@ formEl.addEventListener('submit', (e) => {
         img: `${formEl.elements.img.value}`,
     }
     addProduct(productDataToAdd)
+    location.reload();
 })
-getProductsAPI()
