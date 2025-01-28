@@ -1,13 +1,6 @@
 {
   "products": [
     {
-      "name": "kiwi",
-      "description": "fruit",
-      "price": 25,
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Kiwi_%28Actinidia_chinensis%29_1_Luc_Viatour.jpg/2560px-Kiwi_%28Actinidia_chinensis%29_1_Luc_Viatour.jpg",
-      "id": "4080"
-    },
-    {
       "name": "apple",
       "description": "fruit",
       "price": 43,
@@ -20,6 +13,13 @@
       "price": 54,
       "image": "https://www.harbuz.info/wp-content/uploads/2018/04/Banany.jpg",
       "id": "5907"
+    },
+    {
+      "id": "764a",
+      "name": "c",
+      "price": "d",
+      "description": "s",
+      "img": "w"
     }
   ]
 }

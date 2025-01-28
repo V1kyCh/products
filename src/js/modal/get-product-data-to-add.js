@@ -13,5 +13,4 @@ formEl.addEventListener('submit', (e) => {
         img: `${formEl.elements.img.value}`,
     }
     addProduct(productDataToAdd)
-    location.reload();
 })
