@@ -1,0 +1,65 @@
+img {
+  border-radius: 30px;
+  width: 300px;
+}
+
+.products-list {
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 60px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.product-item {
+  background-color: #fad6aa95;
+  border-radius: 20px;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 330px;
+  padding: 10px;
+  display: flex;
+}
+
+p {
+  margin: 0;
+}
+
+.modal {
+  background-color: #f6c866;
+  border-radius: 30px;
+  padding: 30px;
+  display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.form-item {
+  gap: 5px;
+  display: flex;
+}
+
+.form-input {
+  width: 170px;
+}
+
+.edit-modal {
+  background-color: #6691f6;
+  border-radius: 30px;
+  padding: 30px;
+  display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.is-hidden {
+  display: none;
+}
+/*# sourceMappingURL=index.2cdaf7bc.css.map */
