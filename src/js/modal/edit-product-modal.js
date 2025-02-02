@@ -1,4 +1,8 @@
-import { editProduct } from "../services/editProductApi"
+import { editProductApi } from "../services/editProductApi"
+import { getProductsAPI } from "../services/getProductsApi"
+import {createMarkup} from "../productsLayout"
+import { deleteProduct } from "../deletingProducts";
+
 export const openModal = () => {
     const editBtnArr = document.querySelectorAll('.edit-btn')
     let parentId
@@ -6,13 +10,12 @@ export const openModal = () => {
         editBtn.addEventListener('click', (e) => {
             document.querySelector('.edit-modal').classList.remove('is-hidden')
             parentId = e.target.parentElement.id
-            console.log(parentId)
         })
     })
     const formEl = document.querySelector('.edit-form__info')
     const modalEditEl = document.querySelector('.edit-modal')
 
-    formEl.addEventListener('submit', (e) => {
+    formEl.addEventListener('submit', async (e) => {
         e.preventDefault()
         modalEditEl.classList.add('is-hidden')
         const productDataToEdit = {
@@ -21,12 +24,11 @@ export const openModal = () => {
             description: `${formEl.elements.description.value}`,
             img: `${formEl.elements.img.value}`,
         }
-        editProduct(productDataToEdit, parentId)
+        await editProductApi(productDataToEdit, parentId).then((post) => console.log(post));
+        await getProductsAPI().then(data=>{createMarkup(data); deleteProduct(); openModal()}) 
     })
     const editModalClose = document.querySelector('.close-edit-modal')
     editModalClose.addEventListener('click', () => {
         document.querySelector('.edit-modal').classList.add('is-hidden')
     })
 }
-
-

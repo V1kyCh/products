@@ -1,5 +1,6 @@
 import {getProductsAPI} from './services/getProductsApi'
-import {deleteProductApi} from './services/deleteProductApi'
+import {createMarkup} from "./productsLayout"
+import { deleteProduct } from "./deletingProducts";
+import { openModal } from "./modal/edit-product-modal";
 
-getProductsAPI()
-
+getProductsAPI().then(data=>{createMarkup(data); deleteProduct(); openModal()})

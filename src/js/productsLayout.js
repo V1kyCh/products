@@ -1,7 +1,6 @@
 const productsList = document.querySelector('.products-list')
 
 export const createMarkup = (productsData)=>{
-    console.log(productsData)
     const makrup = productsData.map(obj=>
         `<li class="product-item" id="${obj.id}">
             <p class="product-name">${obj.name}</p>
@@ -12,5 +11,5 @@ export const createMarkup = (productsData)=>{
             <button class="edit-btn" type="button">edit</button>
         </li>`
     ).join('')
-    productsList.insertAdjacentHTML("beforeend", makrup)
+    productsList.innerHTML = makrup
 }

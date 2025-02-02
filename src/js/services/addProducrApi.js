@@ -12,9 +12,9 @@
 //     .catch((error) => console.log(error));
 // };
 
-export const addProduct = async (addData) => {
+export const addProductApi = async (addData) => {
   try {
-    return await fetch("http://localhost:3000/products", {
+    return await fetch("https://679fbd2724322f8329c48216.mockapi.io/products/products", {
       method: "POST",
       body: JSON.stringify(addData),
       headers: {
@@ -22,7 +22,6 @@ export const addProduct = async (addData) => {
       },
     })
       .then((data) => data.json())
-      .then((data) => data)
   } catch (error) {
     console.log(error);
   }
