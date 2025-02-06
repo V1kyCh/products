@@ -608,40 +608,30 @@ var _editProductModal = require("./js/modal/edit-product-modal");
 
 },{"./js/render-page":"1MBV5","./js/services/getProductsApi":"77vlQ","./js/productsLayout":"dViIg","./js/modal/add-product-modal":"kNW0D","./js/modal/get-product-data-to-add":"hwE6r","./js/services/addProducrApi":"ez8j3","./js/services/deleteProductApi":"jbHBY","./js/deletingProducts":"jiEk7","./js/modal/edit-product-modal":"8DZzw"}],"1MBV5":[function(require,module,exports,__globalThis) {
 var _getProductsApi = require("./services/getProductsApi");
-var _deleteProductApi = require("./services/deleteProductApi");
-(0, _getProductsApi.getProductsAPI)();
+var _productsLayout = require("./productsLayout");
+var _deletingProducts = require("./deletingProducts");
+var _editProductModal = require("./modal/edit-product-modal");
+(0, _getProductsApi.getProductsAPI)().then((data)=>{
+    (0, _productsLayout.createMarkup)(data);
+    (0, _deletingProducts.deleteProduct)();
+    (0, _editProductModal.openModal)();
+});
 
-},{"./services/getProductsApi":"77vlQ","./services/deleteProductApi":"jbHBY"}],"77vlQ":[function(require,module,exports,__globalThis) {
+},{"./services/getProductsApi":"77vlQ","./productsLayout":"dViIg","./deletingProducts":"jiEk7","./modal/edit-product-modal":"8DZzw"}],"77vlQ":[function(require,module,exports,__globalThis) {
+// export const getProductsAPI = ()=>{
+//     return fetch('http://localhost:3000/products').then(data=> data.json()).then(data=>{createMarkup(data); deleteProduct(); openModal()}).catch(error => console.log(error))
+// }
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getProductsAPI", ()=>getProductsAPI);
-var _productsLayout = require("../productsLayout");
-var _deletingProducts = require("../deletingProducts");
-var _editProductModal = require("../modal/edit-product-modal");
-const getProductsAPI = ()=>{
-    return fetch('http://localhost:3000/products').then((data)=>data.json()).then((data)=>{
-        (0, _productsLayout.createMarkup)(data);
-        (0, _deletingProducts.deleteProduct)();
-        (0, _editProductModal.openModal)();
-    });
-};
-
-},{"../productsLayout":"dViIg","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../deletingProducts":"jiEk7","../modal/edit-product-modal":"8DZzw"}],"dViIg":[function(require,module,exports,__globalThis) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "createMarkup", ()=>createMarkup);
-const productsList = document.querySelector('.products-list');
-const createMarkup = (productsData)=>{
-    console.log(productsData);
-    const makrup = productsData.map((obj)=>`<li class="product-item" id="${obj.id}">
-            <p class="product-name">${obj.name}</p>
-            <p class="product-price">${obj.price}</p>
-            <p class="product-sort">${obj.description}</p>
-            <img src="${obj.image}" class="product-img"></img>
-            <button class="delete-btn" type="button">delete</button>
-            <button class="edit-btn" type="button">edit</button>
-        </li>`).join('');
-    productsList.insertAdjacentHTML("beforeend", makrup);
+const getProductsAPI = async ()=>{
+    let response;
+    try {
+        response = await fetch('https://679fbd2724322f8329c48216.mockapi.io/products/products').then((data)=>data.json());
+    } catch (error) {
+        response = error;
+    }
+    return response;
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports,__globalThis) {
@@ -674,36 +664,75 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"jiEk7":[function(require,module,exports,__globalThis) {
+},{}],"dViIg":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "createMarkup", ()=>createMarkup);
+const productsList = document.querySelector('.products-list');
+const createMarkup = (productsData)=>{
+    const makrup = productsData.map((obj)=>`<li class="product-item" id="${obj.id}">
+            <p class="product-name">${obj.name}</p>
+            <p class="product-price">${obj.price}</p>
+            <p class="product-sort">${obj.description}</p>
+            <img src="${obj.image}" class="product-img"></img>
+            <button class="delete-btn" type="button">delete</button>
+            <button class="edit-btn" type="button">edit</button>
+        </li>`).join('');
+    productsList.innerHTML = makrup;
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jiEk7":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "deleteProduct", ()=>deleteProduct);
 var _deleteProductApi = require("./services/deleteProductApi");
+var _getProductsApi = require("./services/getProductsApi");
+var _productsLayout = require("./productsLayout");
+var _deletingProducts = require("./deletingProducts");
+var _editProductModal = require("./modal/edit-product-modal");
 const deleteProduct = ()=>{
     const deleteBtnArr = document.querySelectorAll('.delete-btn');
     deleteBtnArr.forEach((deleteBtn)=>{
-        deleteBtn.addEventListener('click', ()=>{
-            (0, _deleteProductApi.deleteProductApi)(deleteBtn.parentElement.id);
+        deleteBtn.addEventListener('click', async ()=>{
+            await (0, _deleteProductApi.deleteProductApi)(deleteBtn.parentElement.id).then((data)=>data);
+            await (0, _getProductsApi.getProductsAPI)().then((data)=>{
+                (0, _productsLayout.createMarkup)(data);
+                (0, _deletingProducts.deleteProduct)();
+                (0, _editProductModal.openModal)();
+            });
         });
     });
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./services/deleteProductApi":"jbHBY"}],"jbHBY":[function(require,module,exports,__globalThis) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./services/deleteProductApi":"jbHBY","./deletingProducts":"jiEk7","./modal/edit-product-modal":"8DZzw","./productsLayout":"dViIg","./services/getProductsApi":"77vlQ"}],"jbHBY":[function(require,module,exports,__globalThis) {
+// export const deleteProductApi =  (id) => {
+//   return fetch(`http://localhost:3000/products/${id}`, {
+//     method: "DELETE",
+//   })
+//     .then((data) => data)
+//     .catch((error) => console.log("Error:", error))
+// };
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "deleteProductApi", ()=>deleteProductApi);
-var _getProductsApi = require("./getProductsApi");
-const deleteProductApi = (id)=>{
-    return fetch(`http://localhost:3000/products/${id}`, {
-        method: "DELETE"
-    }).then((data)=>data).catch((error)=>console.log("Error:", error));
+const deleteProductApi = async (id)=>{
+    try {
+        return await fetch(`https://679fbd2724322f8329c48216.mockapi.io/products/products/${id}`, {
+            method: "DELETE"
+        }).then((data)=>data.json());
+    } catch (error) {
+        console.log(error.message);
+    }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./getProductsApi":"77vlQ"}],"8DZzw":[function(require,module,exports,__globalThis) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8DZzw":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "openModal", ()=>openModal);
 var _editProductApi = require("../services/editProductApi");
+var _getProductsApi = require("../services/getProductsApi");
+var _productsLayout = require("../productsLayout");
+var _deletingProducts = require("../deletingProducts");
 const openModal = ()=>{
     const editBtnArr = document.querySelectorAll('.edit-btn');
     let parentId;
@@ -711,12 +740,11 @@ const openModal = ()=>{
         editBtn.addEventListener('click', (e)=>{
             document.querySelector('.edit-modal').classList.remove('is-hidden');
             parentId = e.target.parentElement.id;
-            console.log(parentId);
         });
     });
     const formEl = document.querySelector('.edit-form__info');
     const modalEditEl = document.querySelector('.edit-modal');
-    formEl.addEventListener('submit', (e)=>{
+    formEl.addEventListener('submit', async (e)=>{
         e.preventDefault();
         modalEditEl.classList.add('is-hidden');
         const productDataToEdit = {
@@ -725,7 +753,12 @@ const openModal = ()=>{
             description: `${formEl.elements.description.value}`,
             img: `${formEl.elements.img.value}`
         };
-        (0, _editProductApi.editProduct)(productDataToEdit, parentId);
+        await (0, _editProductApi.editProductApi)(productDataToEdit, parentId).then((post)=>console.log(post));
+        await (0, _getProductsApi.getProductsAPI)().then((data)=>{
+            (0, _productsLayout.createMarkup)(data);
+            (0, _deletingProducts.deleteProduct)();
+            openModal();
+        });
     });
     const editModalClose = document.querySelector('.close-edit-modal');
     editModalClose.addEventListener('click', ()=>{
@@ -733,19 +766,23 @@ const openModal = ()=>{
     });
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../services/editProductApi":"lG2kt"}],"lG2kt":[function(require,module,exports,__globalThis) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../services/editProductApi":"lG2kt","../services/getProductsApi":"77vlQ","../productsLayout":"dViIg","../deletingProducts":"jiEk7"}],"lG2kt":[function(require,module,exports,__globalThis) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "editProduct", ()=>editProduct);
-const editProduct = (data, editedProductId)=>{
-    const options = {
-        method: "PATCH",
-        body: JSON.stringify(data),
-        headers: {
-            "Content-Type": "application/json; charset=UTF-8"
-        }
-    };
-    fetch(`https://jsonplaceholder.typicode.com/posts/${editedProductId}`, options).then((response)=>response.json()).then((post)=>console.log(post)).catch((error)=>console.log("ERROR" + error));
+parcelHelpers.export(exports, "editProductApi", ()=>editProductApi);
+const editProductApi = async (data, editedProductId)=>{
+    console.log(data, editedProductId);
+    try {
+        return await fetch(`https://679fbd2724322f8329c48216.mockapi.io/products/products/${editedProductId}`, {
+            method: "PUT",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json; charset=UTF-8"
+            }
+        }).then((response)=>response.json());
+    } catch (error) {
+        console.log(error.message);
+    }
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kNW0D":[function(require,module,exports,__globalThis) {
@@ -763,9 +800,13 @@ modalCloseBtn.addEventListener('click', (e)=>{
 
 },{}],"hwE6r":[function(require,module,exports,__globalThis) {
 var _addProducrApi = require("../services/addProducrApi");
+var _getProductsApi = require("../services/getProductsApi");
+var _productsLayout = require("../productsLayout");
+var _deletingProducts = require("../deletingProducts");
+var _editProductModal = require("../modal/edit-product-modal");
 const formEl = document.querySelector('.form-info');
 const modalEl = document.querySelector('.modal');
-formEl.addEventListener('submit', (e)=>{
+formEl.addEventListener('submit', async (e)=>{
     e.preventDefault();
     modalEl.classList.add('is-hidden');
     const productDataToAdd = {
@@ -774,22 +815,43 @@ formEl.addEventListener('submit', (e)=>{
         description: `${formEl.elements.description.value}`,
         img: `${formEl.elements.img.value}`
     };
-    (0, _addProducrApi.addProduct)(productDataToAdd);
+    await (0, _addProducrApi.addProductApi)(productDataToAdd).then((data)=>data);
+    await (0, _getProductsApi.getProductsAPI)().then((data)=>{
+        (0, _productsLayout.createMarkup)(data);
+        (0, _deletingProducts.deleteProduct)();
+        (0, _editProductModal.openModal)();
+    });
 });
 
-},{"../services/addProducrApi":"ez8j3"}],"ez8j3":[function(require,module,exports,__globalThis) {
+},{"../services/addProducrApi":"ez8j3","../services/getProductsApi":"77vlQ","../productsLayout":"dViIg","../deletingProducts":"jiEk7","../modal/edit-product-modal":"8DZzw"}],"ez8j3":[function(require,module,exports,__globalThis) {
+// export const addProduct = (addData) => {
+//   const options = {
+//     method: "POST",
+//     body: JSON.stringify(addData),
+//     headers: {
+//       "Content-Type": "application/json; charset=UTF-8",
+//     },
+//   };
+//   return fetch("http://localhost:3000/products", options)
+//     .then((data) => data.json())
+//     .then((data) => data)
+//     .catch((error) => console.log(error));
+// };
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "addProduct", ()=>addProduct);
-const addProduct = (addData)=>{
-    const options = {
-        method: "POST",
-        body: JSON.stringify(addData),
-        headers: {
-            "Content-Type": "application/json; charset=UTF-8"
-        }
-    };
-    return fetch("http://localhost:3000/products", options).then((data)=>data.json()).then((data)=>data).catch((error)=>console.log(error));
+parcelHelpers.export(exports, "addProductApi", ()=>addProductApi);
+const addProductApi = async (addData)=>{
+    try {
+        return await fetch("https://679fbd2724322f8329c48216.mockapi.io/products/products", {
+            method: "POST",
+            body: JSON.stringify(addData),
+            headers: {
+                "Content-Type": "application/json; charset=UTF-8"
+            }
+        }).then((data)=>data.json());
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["9mu7C","8lqZg"], "8lqZg", "parcelRequire94c2")
