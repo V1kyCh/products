@@ -1,4 +1,4 @@
-import { addProductApi } from "../services/addProducrApi"
+import { addProductApi } from "../services/addProducrApi";
 import { getProductsAPI } from "../services/getProductsApi"
 import {createMarkup} from "../productsLayout"
 import { deleteProduct } from "../deletingProducts";
