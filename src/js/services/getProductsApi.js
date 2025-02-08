@@ -4,6 +4,7 @@
 
 export const getProductsAPI = async ()=>{
     let response
+    
     try{
      response = await fetch('https://679fbd2724322f8329c48216.mockapi.io/products/products').then(data=> data.json())
     } catch(error) {
